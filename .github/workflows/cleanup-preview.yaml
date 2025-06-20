@@ -1,4 +1,4 @@
-name: Cleanup Preview on PR Close
+name: Cleanup Storybook Preview
 
 on:
   pull_request:
@@ -25,15 +25,17 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-      - name: Sanitize branch name
+      - name: Sanitize branch name (match deploy)
         id: vars
         run: |
-          slug="${{ github.head_ref }}" && slug="${slug//\//-}"
-          echo "slug=$slug" >> $GITHUB_OUTPUT
+          BRANCH_NAME="${{ github.head_ref }}"
+          SLUG="${BRANCH_NAME##*/}"         # same as GITHUB_REF##*/
+          SLUG="${SLUG//\//}"               # remove any remaining slashes
+          echo "slug=$SLUG" >> $GITHUB_OUTPUT
 
-      - name: Remove preview folder
+      - name: Delete preview folder
         run: |
           rm -rf preview/${{ steps.vars.outputs.slug }}
-          git rm -rf preview/${{ steps.vars.outputs.slug }} || echo "Folder not found, skipping"
-          git commit -m "chore: cleanup preview for ${{ github.head_ref }}"
+          git rm -rf preview/${{ steps.vars.outputs.slug }} || echo "Nothing to delete"
+          git commit -m "chore: remove preview for ${{ steps.vars.outputs.slug }}" || echo "Nothing to commit"
           git push
