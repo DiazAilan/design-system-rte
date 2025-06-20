@@ -31,7 +31,7 @@ jobs:
         run: npm run build-design-docs
 
       - name: Build Storybook
-        run: npm run build-storybook  # Make sure this outputs to ./storybook-static
+        run: npm run build-base-storybook  # Make sure this outputs to ./storybook-static
 
       - name: Deploy to GitHub Pages (feature preview)
         uses: peaceiris/actions-gh-pages@v3
