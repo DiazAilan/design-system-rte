@@ -33,10 +33,14 @@ jobs:
       - name: Build Storybook
         run: npm run build-base-storybook  # Make sure this outputs to ./storybook-static
 
-      - name: Deploy to GitHub Pages (feature preview)
+      - name: Sanitize branch name
+        id: vars
+        run: echo "slug=${GITHUB_REF##*/}" | sed 's#/##g' >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./storybook-static
-          destination_dir: preview/${{ github.head_ref }}
+          destination_dir: preview/${{ steps.vars.outputs.slug }}
           publish_branch: gh-pages
