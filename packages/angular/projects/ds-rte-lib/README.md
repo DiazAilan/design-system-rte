@@ -1,4 +1,6 @@
-Trivial change to trigger auto-changesets
+Trivial change that shouldn't trigger auto-changesets
+
+Trivial change that SHOULD trigget auto-changesets
 
 # Lib
 
