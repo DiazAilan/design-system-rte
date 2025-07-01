@@ -250,12 +250,6 @@ jobs:
             ./packages/angular/projects/ds-rte-lib/src/lib/assets/icons
           key: icons-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
 
-      - name: Fetch origin/main for comparison
-        run: git fetch origin main
-
-      - name: Run auto-add-changesets
-        run: npm run auto-add-changesets
-
       - name: Apply changeset versioning
         run: npm run changeset version
 
