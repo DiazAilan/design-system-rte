@@ -253,6 +253,9 @@ jobs:
       - name: Apply changeset versioning
         run: npm run changeset version
 
+      - name: Stage all changes
++        run: git add .
+
       - name: Commit changesets if any were created
         run: |
           if git diff --staged --quiet; then
