@@ -231,14 +231,11 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm ci --prefer-offline
-
       - name: Apply changeset versioning
         run: npm run changeset version
 
       - name: Stage all changes
-        run: git add .
+        run: git add .changeset/ packages/*/package.json CHANGELOG.md
 
       - name: Commit and push changesets if any were created
         run: |
