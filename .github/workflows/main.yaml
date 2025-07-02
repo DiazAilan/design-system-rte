@@ -215,9 +215,11 @@ jobs:
         working-directory: packages/angular
         run: npm run build
 
-  auto-add-changesets:
+  apply-changesets:
     runs-on: ubuntu-latest
     needs: [build-react, build-angular]
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -229,46 +231,28 @@ jobs:
         with:
           node-version: 20
 
-      - name: Restore cache node_modules and Vite cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ./node_modules
-            ./packages/react/node_modules
-            ./packages/react/.vite
-            ./packages/angular/node_modules
-            ./packages/angular/.vite
-          key: deps-node20-main-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
-          restore-keys: |
-            deps-node20-main-
-
-      - name: Restore cache icons
-        uses: actions/cache@v4
-        with:
-          path: |
-            ./packages/react/src/components/icon/generated
-            ./packages/angular/projects/ds-rte-lib/src/lib/assets/icons
-          key: icons-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+      - name: Install dependencies
+        run: npm ci --prefer-offline
 
       - name: Apply changeset versioning
         run: npm run changeset version
 
       - name: Stage all changes
-+        run: git add .
+        run: git add .
 
-      - name: Commit changesets if any were created
+      - name: Commit and push changesets if any were created
         run: |
           if git diff --staged --quiet; then
             echo "No changesets to commit"
           else
             git config --local user.email "action@github.com"
             git config --local user.name "GitHub Action"
-            git commit -m "chore: auto-add changesets"
+            git commit -m "chore: apply changesets"
             git push
           fi
 
   prepare-release:
-    needs: [build-react, build-angular, auto-add-changesets]
+    needs: [build-react, build-angular, apply-changesets]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
