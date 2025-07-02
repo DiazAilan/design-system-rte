@@ -52,3 +52,21 @@ export function getRelevantCommitsForPackage(packageDir, commits, changedFiles) 
 
   return relevantCommits;
 }
+
+export function stageChangesetFiles() {
+  try {
+    execSync("git add .changeset/auto-*.md", { stdio: "inherit" });
+    console.log("📝 Staged auto-generated changeset files");
+  } catch (error) {
+    console.warn("No auto-generated changeset files to stage:", error.message);
+  }
+}
+
+export function amendLastCommit() {
+  try {
+    execSync("git commit --amend --no-edit --no-verify", { stdio: "inherit" });
+    console.log("✅ Amended last commit with changeset files");
+  } catch (error) {
+    console.error("Failed to amend last commit:", error.message);
+  }
+}
