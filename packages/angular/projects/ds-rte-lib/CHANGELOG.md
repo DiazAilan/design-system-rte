@@ -1,5 +1,12 @@
 # @design-system-rte/angular
 
+## 0.4.6
+
+### Patch Changes
+
+- Updated dependencies [99ff38e]
+  - @design-system-rte/core@0.7.0
+
 ## 0.4.5
 
 ### Patch Changes
