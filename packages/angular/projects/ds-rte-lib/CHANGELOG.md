@@ -1,5 +1,13 @@
 # @design-system-rte/angular
 
+## 0.5.0
+
+### Minor Changes
+
+- b1fd96f: ## Changes
+
+  - add something to angular
+
 ## 0.4.6
 
 ### Patch Changes
