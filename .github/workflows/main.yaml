@@ -251,5 +251,5 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git commit -m "chore: update main changelog" || exit 0
-          git push
+          git commit -m "chore: update main changelog" --no-verify || exit 0
+          git push origin -u changesets-release/main
