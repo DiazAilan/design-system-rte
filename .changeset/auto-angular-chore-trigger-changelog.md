@@ -4,5 +4,4 @@
   
   ## Changes
 
-- (main changelog): trigger changelog
-- trigger changelog
+- (Main Changelog) trigger changelog
