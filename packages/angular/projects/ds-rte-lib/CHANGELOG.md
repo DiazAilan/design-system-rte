@@ -1,5 +1,17 @@
 # @design-system-rte/angular
 
+## 0.10.1
+
+### Patch Changes
+
+- bf99603: ## Changes
+
+  - (main changelog): trigger changelog
+  - trigger changelog
+
+- Updated dependencies [db7edfd]
+  - @design-system-rte/core@0.14.0
+
 ## 0.10.0
 
 ### Minor Changes
