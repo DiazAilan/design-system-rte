@@ -65,13 +65,15 @@ export function formatChangesetContent(packageName, bump, relevantCommits) {
   
   `;
 
-  if (relevantCommits.length > 0) {
+  if (relevantCommits.length) {
+    const PARENTHESIS_REGEX = /\((.+?)\)/;
     content += `## Changes\n\n`;
     relevantCommits.forEach((commit) => {
       const commitKeywords = commit.indexOf(":") !== -1 ? commit.substring(0, commit.indexOf(":")) : "";
-      const commitContext = commitKeywords.match(/\((.+?)\)/)[1].trim();
+      const commitContext = commitKeywords.match(PARENTHESIS_REGEX) ? commitKeywords.match(PARENTHESIS_REGEX)[1].trim() : "";
+      const formattedCommitContext = commitContext ? `(${capitalizeText(commitContext)}) ` : "";
       const cleanCommit = commit.replace(/^(feat|fix|docs|style|refactor|test|chore)(\(.+?\))?:?\s*/i, "");
-      content += `- (${capitalizeText(commitContext)}) ${cleanCommit}\n`;
+      content += `- ${formattedCommitContext}${cleanCommit}\n`;
     });
   } else {
     content += `Auto bump`;
