@@ -70,7 +70,9 @@ export function formatChangesetContent(packageName, bump, relevantCommits) {
     content += `## Changes\n\n`;
     relevantCommits.forEach((commit) => {
       const commitKeywords = commit.indexOf(":") !== -1 ? commit.substring(0, commit.indexOf(":")) : "";
-      const commitContext = commitKeywords.match(PARENTHESIS_REGEX) ? commitKeywords.match(PARENTHESIS_REGEX)[1].trim() : "";
+      const commitContext = commitKeywords.match(PARENTHESIS_REGEX)
+        ? commitKeywords.match(PARENTHESIS_REGEX)[1].trim()
+        : "";
       const formattedCommitContext = commitContext ? `(${capitalizeText(commitContext)}) ` : "";
       const cleanCommit = commit.replace(/^(feat|fix|docs|style|refactor|test|chore)\s*(\([^)]+\))?\s*:?\s*/i, "");
       content += `- ${formattedCommitContext}${cleanCommit}\n`;
