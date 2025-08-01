@@ -73,7 +73,7 @@ export function formatChangesetContent(packageName, bump, relevantCommits) {
       const commitContext = commitKeywords.match(PARENTHESIS_REGEX) ? commitKeywords.match(PARENTHESIS_REGEX)[1].trim() : "";
       const formattedCommitContext = commitContext ? `(${capitalizeText(commitContext)}) ` : "";
       console.log("formattedCommitContext", formattedCommitContext);
-      const cleanCommit = commit.replace(/^(feat|fix|docs|style|refactor|test|chore)(\(.+?\))?:?\s*/i, "");
+      const cleanCommit = commit.replace(/^(feat|fix|docs|style|refactor|test|chore)(\([^)]+\))?:?\s*/i, "");
       content += `- ${formattedCommitContext}${cleanCommit}\n`;
     });
   } else {
