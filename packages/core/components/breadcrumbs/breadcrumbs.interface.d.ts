@@ -1,0 +1,15 @@
+export interface BreadcrumbsProps {
+  items: BreadcrumbProps[];
+  ariaLabel?: string;
+}
+
+export interface BreadcrumbProps {
+  label: string;
+  link: string;
+}
+
+export interface BreadcrumbsTruncatedItems {
+  root: BreadcrumbProps;
+  truncated: BreadcrumbProps[];
+  remaining: BreadcrumbProps[];
+}

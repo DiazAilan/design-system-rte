@@ -11,6 +11,7 @@ import {
   Divider,
   Switch,
   SegmentedControl,
+  Breadcrumbs,
 } from "@design-system-rte/react";
 import "./App.css";
 import { useState } from "react";
@@ -36,7 +37,7 @@ function App() {
   };
 
   return (
-    <div data-theme="bleu_iceberg" data-mode="light">
+    <div>
       <div>
         <h3>Icon</h3>
         <Icon name="check" />
@@ -148,6 +149,17 @@ function App() {
           ]}
           selected={segmentedControlValue}
           onClick={handleSegmentedControlClick}
+        />
+      </div>
+      <div>
+        <h3>Breadcrumbs</h3>
+        <Breadcrumbs
+          items={[
+            { link: "/", label: "Home" },
+            { link: "/products", label: "Products" },
+            { link: "/electronics", label: "Electronics" },
+            { link: "/smartphones", label: "Smartphones" },
+          ]}
         />
       </div>
     </div>
