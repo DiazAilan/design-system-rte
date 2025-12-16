@@ -47,7 +47,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^18.2.1",
     "storybook": "~8.6.0",
-    "typescript": "~5.4.2"
+    "typescript": "~5.9.0"
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.27.1"
