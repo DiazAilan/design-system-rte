@@ -1,4 +1,4 @@
-import { DOWN_KEY } from "@design-system-rte/core/constants/keyboard/keyboard.constants";
+import { ARROW_DOWN_KEY } from "@design-system-rte/core/constants/keyboard/keyboard.constants";
 import { Meta, StoryObj } from "@storybook/angular";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
 
@@ -9,50 +9,14 @@ import { SplitButtonComponent } from "./split-button.component";
 const RegularIconIds = Object.keys(RegularIconsList);
 const TogglableIconIds = Object.keys(TogglableIconsList);
 
-const mockChildren = `
-  <div style="display: flex; flex-direction: column; gap: 8px; min-width: 120px">
-    <button
-      style="
-        padding: 8px 16px;
-        border: none;
-        border-radius: 4px;
-        background: #2563eb;
-        color: #fff;
-        font-weight: 500;
-        font-size: 15px;
-        cursor: pointer;
-      "
-    >
-      Action 1
-    </button>
-    <button
-      style="
-        padding: 8px 16px;
-        border: none;
-        border-radius: 4px;
-        background: #64748b;
-        color: #fff;
-        font-weight: 500;
-        font-size: 15px;
-        cursor: pointer;
-      "
-    >
-      Action 2
-    </button>
-  </div>
-`;
-
-const wipWarning = `
-<div>
-  <span style="font-family: sans-serif; margin-bottom: 16px; border: 1px solid #F4922B; padding: 8px; border-radius: 5px; background-color: #FAFFC1; margin: 0;">
-    Ce composant est en cours de développement et n'est pas encore disponible
-  </span>
-</div>
-<br/>
-`;
+const defaultOptions = [
+  { id: "option-1", label: "Option 1", onClick: () => console.log("Option 1 clicked") },
+  { id: "option-2", label: "Option 2", onClick: () => console.log("Option 2 clicked") },
+  { id: "option-3", label: "Option 3", onClick: () => console.log("Option 3 clicked") },
+];
 
 const meta: Meta<SplitButtonComponent> = {
-  title: "SplitButton (développement en cours)",
+  title: "Composants/SplitButton",
   id: "SplitButton",
   component: SplitButtonComponent,
   tags: ["autodocs"],
@@ -66,9 +30,6 @@ const meta: Meta<SplitButtonComponent> = {
       options: ["s", "m", "l"],
     },
     compactSpacing: {
-      control: "boolean",
-    },
-    selected: {
       control: "boolean",
     },
     position: {
@@ -98,13 +59,12 @@ export const Default: Story = {
     appearance: "primary",
     position: "bottom-start",
     disabled: false,
-    selected: false,
     icon: null,
+    options: defaultOptions,
   },
   render: (args) => ({
     props: args,
     template: `
-      ${wipWarning}
       <rte-split-button
         label="${args.label}"
         ariaLabelRight="${args.ariaLabelRight}"
@@ -113,11 +73,11 @@ export const Default: Story = {
         appearance="${args.appearance}"
         position="${args.position}"
         [disabled]="${args.disabled}"
-        [selected]="${args.selected}"
         [icon]="icon"
-      >
-        ${mockChildren}
-      </rte-split-button>
+        [options]="options"
+      />
+        
+      
     `,
   }),
   play: async ({ canvasElement }) => {
@@ -131,7 +91,6 @@ export const Appearance: Story = {
   render: (args) => ({
     props: args,
     template: `
-      ${wipWarning}
       <div style="display: flex; gap: 16px">
         <rte-split-button
           label="${args.label}"
@@ -141,10 +100,10 @@ export const Appearance: Story = {
           appearance="primary"
           position="${args.position}"
           [disabled]="${args.disabled}"
-          [selected]="${args.selected}"
-        >
-          ${mockChildren}
-        </rte-split-button>
+          [options]="options"
+        />
+          
+        
         <rte-split-button
           label="${args.label}"
           ariaLabelRight="${args.ariaLabelRight}"
@@ -153,10 +112,10 @@ export const Appearance: Story = {
           appearance="secondary"
           position="${args.position}"
           [disabled]="${args.disabled}"
-          [selected]="${args.selected}"
-        >
-          ${mockChildren}
-        </rte-split-button>
+          [options]="options"
+        />
+          
+        
       </div>
     `,
   }),
@@ -169,7 +128,6 @@ export const Size: Story = {
   render: (args) => ({
     props: args,
     template: `
-      ${wipWarning}
       <div style="display: flex; gap: 16px">
         <rte-split-button
           label="${args.label}"
@@ -179,10 +137,10 @@ export const Size: Story = {
           appearance="${args.appearance}"
           position="${args.position}"
           [disabled]="${args.disabled}"
-          [selected]="${args.selected}"
-        >
-          ${mockChildren}
-        </rte-split-button>
+          [options]="options"
+        />
+          
+        
         <rte-split-button
           label="${args.label}"
           ariaLabelRight="${args.ariaLabelRight}"
@@ -191,10 +149,10 @@ export const Size: Story = {
           appearance="${args.appearance}"
           position="${args.position}"
           [disabled]="${args.disabled}"
-          [selected]="${args.selected}"
-        >
-          ${mockChildren}
-        </rte-split-button>
+          [options]="options"
+        />
+          
+        
         <rte-split-button
           label="${args.label}"
           ariaLabelRight="${args.ariaLabelRight}"
@@ -203,10 +161,8 @@ export const Size: Story = {
           appearance="${args.appearance}"
           position="${args.position}"
           [disabled]="${args.disabled}"
-          [selected]="${args.selected}"
-        >
-          ${mockChildren}
-        </rte-split-button>
+          [options]="options"
+        />
       </div>
     `,
   }),
@@ -219,7 +175,6 @@ export const CompactSpacing: Story = {
   render: (args) => ({
     props: args,
     template: `
-      ${wipWarning}
       <div style="display: flex; gap: 16px">
         <rte-split-button
           label="${args.label}"
@@ -229,10 +184,10 @@ export const CompactSpacing: Story = {
           appearance="${args.appearance}"
           position="${args.position}"
           [disabled]="${args.disabled}"
-          [selected]="${args.selected}"
-        >
-          ${mockChildren}
-        </rte-split-button>
+          [options]="options"
+        />
+          
+        
         <rte-split-button
           label="${args.label}"
           ariaLabelRight="${args.ariaLabelRight}"
@@ -241,10 +196,10 @@ export const CompactSpacing: Story = {
           appearance="${args.appearance}"
           position="${args.position}"
           [disabled]="${args.disabled}"
-          [selected]="${args.selected}"
-        >
-          ${mockChildren}
-        </rte-split-button>
+          [options]="options"
+        />
+          
+        
         <rte-split-button
           label="${args.label}"
           ariaLabelRight="${args.ariaLabelRight}"
@@ -253,10 +208,10 @@ export const CompactSpacing: Story = {
           appearance="${args.appearance}"
           position="${args.position}"
           [disabled]="${args.disabled}"
-          [selected]="${args.selected}"
-        >
-          ${mockChildren}
-        </rte-split-button>
+          [options]="options"
+        />
+          
+        
       </div>
     `,
   }),
@@ -270,7 +225,6 @@ export const Position: Story = {
   render: (args) => ({
     props: args,
     template: `
-      ${wipWarning}
       <div style="display: flex; justify-content: center; align-items: center; min-height: 600px">
         <div style="display: grid; grid-template-columns: 2fr 2fr; gap: 24px">
           <rte-split-button
@@ -281,10 +235,8 @@ export const Position: Story = {
             appearance="${args.appearance}"
             position="top-end"
             [disabled]="${args.disabled}"
-            [selected]="${args.selected}"
-          >
-            ${mockChildren}
-          </rte-split-button>
+            [options]="options"
+          />
           <rte-split-button
             label="${args.label}"
             ariaLabelRight="${args.ariaLabelRight}"
@@ -293,10 +245,8 @@ export const Position: Story = {
             appearance="${args.appearance}"
             position="top-start"
             [disabled]="${args.disabled}"
-            [selected]="${args.selected}"
-          >
-            ${mockChildren}
-          </rte-split-button>
+            [options]="options"
+          />
           <rte-split-button
             label="${args.label}"
             ariaLabelRight="${args.ariaLabelRight}"
@@ -304,9 +254,8 @@ export const Position: Story = {
             [compactSpacing]="${args.compactSpacing}"
             appearance="${args.appearance}"
             position="bottom-end"
-          >
-            ${mockChildren}
-          </rte-split-button>
+            [options]="options"
+          />
           <rte-split-button
             label="${args.label}"
             ariaLabelRight="${args.ariaLabelRight}"
@@ -314,9 +263,8 @@ export const Position: Story = {
             [compactSpacing]="${args.compactSpacing}"
             appearance="${args.appearance}"
             position="bottom-start"
-          >
-            ${mockChildren}
-          </rte-split-button>
+            [options]="options"
+          />
         </div>
       </div>
     `,
@@ -330,12 +278,11 @@ export const KeyboardInteraction: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByTestId("Menu button");
-    const menuContainer = canvas.getByTestId("Menu container");
     await userEvent.tab();
     await userEvent.tab();
     expect(document.activeElement).toBe(button);
-    await userEvent.keyboard(`{${DOWN_KEY}}`);
-    await waitFor(() => expect(menuContainer).toBeVisible());
+    await userEvent.keyboard(`{${ARROW_DOWN_KEY}}`);
+    await waitFor(() => expect(document.body.querySelector('[data-testid = "Menu container"]')).toBeVisible());
   },
   args: {
     ...Default.args,
