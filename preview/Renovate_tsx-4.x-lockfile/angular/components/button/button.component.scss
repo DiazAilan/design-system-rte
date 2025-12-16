@@ -1,11 +1,13 @@
 @use '@design-system-rte/core/design-tokens/main.scss' as *;
 
-.rte-button {
-    align-items: center;
-    cursor: pointer;
+:host {
+
     display: inline-flex;
     flex-shrink: 0;
+    align-items: center;
+    cursor: pointer;
     justify-content: center;
+    width: fit-content;
 
     &:focus-visible {
         outline: 1px solid var(--border-brand-focused);
@@ -119,7 +121,7 @@
         }
 
         &:active {
-            color: var(--content-brand-press);
+            color: var(--content-brand-pressed);
         }
 
         &:disabled {
@@ -133,7 +135,6 @@
         background: var(--background-danger-default);
         border: none;
         color: var(--content-primary-inverse);
-        border-radius: $radius-m;
 
         &:hover {
             background: var(--background-danger-hover);
