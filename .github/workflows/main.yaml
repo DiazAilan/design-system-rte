@@ -253,3 +253,10 @@ jobs:
           git add .
           git commit -m "chore: update main changelog" --no-verify || exit 0
           git push origin -u changeset-release/main
+
+  deploy-storybook-preview:
+    needs: [prepare-release]
+    uses: ./.github/workflows/storybook-preview.yaml
+    with:
+      branch: changeset-release/main
+    secrets: inherit
