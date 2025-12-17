@@ -1,5 +1,17 @@
 # @design-system-rte/design-docs
 
+## 1.1.0
+
+### Minor Changes
+
+- cb28ab9: ## Changes
+  - (Docs) add presentation video to home page
+
+### Patch Changes
+
+- 1274057: ## Changes
+  - (Docs) correct general migration kit points table
+
 ## 1.0.0
 
 ### Major Changes
@@ -44,7 +56,7 @@
   - (Docs) add heading level 4 style
   - (Docs) Add Colors page
   - (Docs) Add design tokens page
-  
+
 ## 0.9.0
 
 ### Minor Changes
