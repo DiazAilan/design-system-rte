@@ -1,11 +1,25 @@
 # @design-system-rte/angular
 
+## 1.0.1
+
+### Patch Changes
+
+- f39a6fb: ## Changes
+  - better export of module to access style and component
+  - (Docs) update test to take theme-selector component into account
+
+- 0a36e15: ## Changes
+  - (Docs) order toast stories
+
+- Updated dependencies [aa4024c]
+  - @design-system-rte/core@1.1.0
+
 ## 1.0.0
 
 ### Major Changes
 
 - adc4eb6: ## Changes
-  - (Public Release) Public Release 
+  - (Public Release) Public Release
 
 ### Minor Changes
 
