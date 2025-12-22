@@ -1,11 +1,32 @@
 # @design-system-rte/react
 
+## 1.1.0
+
+### Minor Changes
+
+- f39a6fb: ## Changes
+  - better export of module to access style and component
+  - (Docs) update test to take theme-selector component into account
+  - (Docs) harmonise stories layout
+  - (Docs) move theme and mode switcher to component page
+
+- aa4024c: ## Changes
+  - (Core) add Nunito font to serve to react and angular package
+
+### Patch Changes
+
+- 0a36e15: ## Changes
+  - (Docs) order toast stories
+
+- Updated dependencies [aa4024c]
+  - @design-system-rte/core@1.1.0
+
 ## 1.0.0
 
 ### Major Changes
 
 - adc4eb6: ## Changes
-  - (Public Release) Public Release 
+  - (Public Release) Public Release
 
 ### Minor Changes
 
