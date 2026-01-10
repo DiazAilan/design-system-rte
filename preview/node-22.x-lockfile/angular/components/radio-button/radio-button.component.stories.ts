@@ -4,7 +4,7 @@ import { userEvent, within, expect } from "@storybook/test";
 import { RadioButtonComponent } from "./radio-button.component";
 
 const meta: Meta<RadioButtonComponent> = {
-  title: "RadioButton",
+  title: "Composants/RadioButton",
   component: RadioButtonComponent,
   tags: ["autodocs"],
   argTypes: {
@@ -48,7 +48,7 @@ export const Default: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const radioButton = canvas.getByRole("radio");
+    const radioButton = canvas.getByRole("radio", { name: /radio button/i });
     await userEvent.click(radioButton);
     expect(radioButton).toBeChecked();
   },

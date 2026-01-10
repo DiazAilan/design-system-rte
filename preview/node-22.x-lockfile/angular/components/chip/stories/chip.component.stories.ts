@@ -76,7 +76,7 @@ export const SingleSelect: Story = {
         },
       },
       template: `
-        <div style="display: flex; gap: 10px;" role="radiogroup">
+        <div style="display: flex; gap: 10px;" role="radiogroup" data-testid="test-chip-group">
           <rte-chip
             *ngFor="let option of options"
             [id]="option.id"
@@ -94,7 +94,7 @@ export const SingleSelect: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const chips = canvas.getAllByRole("radio");
+    const chips = canvas.getByTestId("test-chip-group").querySelectorAll("[role='radio']");
 
     await userEvent.click(chips[0]);
     expect(chips[0]).toHaveAttribute("aria-checked", "true");
@@ -229,7 +229,7 @@ export const InputChip: Story = {
           (valueChange)="onChange($event)"
           (keydown)="handleKeyDown($event)"
         ></rte-text-input>
-          <rte-button label="Add Chip" (click)="handleAddChip()"></rte-button>
+          <button rteButton (click)="handleAddChip()">Add Chip</button>
         </div>
         <div style="display: flex; gap: 10px;" role="listbox" aria-label="Chips List">
           <rte-chip

@@ -1,10 +1,17 @@
+import {
+  TESTING_DOWN_KEY,
+  TESTING_ENTER_KEY,
+  TESTING_UP_KEY,
+} from "@design-system-rte/core/constants/keyboard/keyboard-test.constants";
 import { Meta, StoryObj } from "@storybook/angular";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
+
+import { focusElementBeforeComponent } from "../../../../../../.storybook/testing/testing.utils";
 
 import { BreadcrumbsComponent } from "./breadcrumbs.component";
 
 export default {
-  title: "Breadcrumbs (développement en cours)",
+  title: "Composants/Breadcrumbs",
   component: BreadcrumbsComponent,
   tags: ["autodocs"],
   argTypes: {
@@ -13,6 +20,10 @@ export default {
     },
     ariaLabel: {
       control: "text",
+    },
+    breadcrumbItemMaxWidth: {
+      control: "number",
+      description: "Maximum width for each breadcrumb item in pixels.",
     },
   },
 } satisfies Meta<BreadcrumbsComponent>;
@@ -24,15 +35,6 @@ const mockItems = [
   { label: "Smartphones", link: "/products/electronics/smartphones" },
 ];
 
-const wipWarning = `
-<div>
-  <span style="font-family: sans-serif; margin-bottom: 16px; border: 1px solid #F4922B; padding: 8px; border-radius: 5px; background-color: #FAFFC1; margin: 0;">
-    Ce composant est en cours de développement et n'est pas encore disponible
-  </span>
-</div>
-<br/>
-`;
-
 export const Default: StoryObj<BreadcrumbsComponent> = {
   args: {
     items: mockItems,
@@ -43,8 +45,23 @@ export const Default: StoryObj<BreadcrumbsComponent> = {
       mockItems,
     },
     template: `
-      ${wipWarning}
-      <rte-breadcrumbs [items]="items" [ariaLabel]="ariaLabel" data-testid="breadcrumbs"/>
+      <rte-breadcrumbs [items]="items" [ariaLabel]="ariaLabel" data-testid="breadcrumbs" [breadcrumbItemMaxWidth]="breadcrumbItemMaxWidth"/>
+    `,
+  }),
+};
+
+export const MaxWidthBreadcrumbItem: StoryObj<BreadcrumbsComponent> = {
+  args: {
+    items: mockItems,
+    breadcrumbItemMaxWidth: 50,
+  },
+  render: (args) => ({
+    props: {
+      ...args,
+      mockItems,
+    },
+    template: `
+      <rte-breadcrumbs [items]="items" [ariaLabel]="ariaLabel" data-testid="breadcrumbs" [breadcrumbItemMaxWidth]="breadcrumbItemMaxWidth"/>
     `,
   }),
 };
@@ -57,16 +74,20 @@ export const KeyboardNavigation: StoryObj<BreadcrumbsComponent> = {
     props: {
       ...args,
     },
-    template: `<rte-breadcrumbs [items]="items" [ariaLabel]="ariaLabel" data-testid="breadcrumbs"/>`,
+    template: `<rte-breadcrumbs [items]="items" [ariaLabel]="ariaLabel" data-testid="breadcrumbs" [breadcrumbItemMaxWidth]="breadcrumbItemMaxWidth"/>`,
   }),
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const breadcrumbs = canvas.getByTestId("breadcrumbs").querySelectorAll("div");
     const breadCrumbsHead = breadcrumbs[breadcrumbs.length - 1].querySelector("a");
+    focusElementBeforeComponent(canvasElement);
+
     args.items.forEach(async () => {
       await userEvent.tab();
     });
+
     await waitFor(() => expect(breadCrumbsHead).toHaveFocus());
+
     await userEvent.tab({ shift: true });
     expect(breadcrumbs[breadcrumbs.length - 2].querySelector("a")).toHaveFocus();
   },
@@ -83,8 +104,8 @@ export const Truncated: StoryObj<BreadcrumbsComponent> = {
       mockItems,
     },
     template: `
-      <rte-breadcrumbs [items]="items" [ariaLabel]="ariaLabel" data-testid="breadcrumbs"/>
-      <rte-breadcrumbs [items]="mockItems" [ariaLabel]="ariaLabel" data-testid="breadcrumbs-truncated"/>
+      <rte-breadcrumbs [items]="items" [ariaLabel]="ariaLabel" data-testid="breadcrumbs" [breadcrumbItemMaxWidth]="breadcrumbItemMaxWidth"/>
+      <rte-breadcrumbs [items]="mockItems" [ariaLabel]="ariaLabel" data-testid="breadcrumbs-truncated" [breadcrumbItemMaxWidth]="breadcrumbItemMaxWidth"/>
     `,
   }),
   play: async ({ canvasElement }) => {
@@ -109,10 +130,46 @@ export const MultipleElements: StoryObj<BreadcrumbsComponent> = {
       fourItems: [...args.items, { label: "brand", link: "/products/electronics/smartphones/brand" }],
     },
     template: `
-      <rte-breadcrumbs [items]="oneItem" [ariaLabel]="ariaLabel" data-testid="breadcrumbs-one-item"/>
-      <rte-breadcrumbs [items]="twoItems" [ariaLabel]="ariaLabel" data-testid="breadcrumbs-two-items"/>
-      <rte-breadcrumbs [items]="threeItems" [ariaLabel]="ariaLabel" data-testid="breadcrumbs-three-items"/>
-      <rte-breadcrumbs [items]="items" [ariaLabel]="ariaLabel" data-testid="breadcrumbs"/>
+      <rte-breadcrumbs [items]="oneItem" [ariaLabel]="ariaLabel" data-testid="breadcrumbs-one-item" [breadcrumbItemMaxWidth]="breadcrumbItemMaxWidth"/>
+      <rte-breadcrumbs [items]="twoItems" [ariaLabel]="ariaLabel" data-testid="breadcrumbs-two-items" [breadcrumbItemMaxWidth]="breadcrumbItemMaxWidth"/>
+      <rte-breadcrumbs [items]="threeItems" [ariaLabel]="ariaLabel" data-testid="breadcrumbs-three-items" [breadcrumbItemMaxWidth]="breadcrumbItemMaxWidth"/>
+      <rte-breadcrumbs [items]="items" [ariaLabel]="ariaLabel" data-testid="breadcrumbs" [breadcrumbItemMaxWidth]="breadcrumbItemMaxWidth"/>
     `,
   }),
+};
+
+export const KeyboardNavigationWithDropdown: StoryObj<BreadcrumbsComponent> = {
+  args: {
+    ...Default.args,
+    items: [
+      ...(Default.args?.items ?? []),
+      { label: "FancyBrand Phone", link: "/products/electronics/smartphones/fancybrand-phone" },
+    ],
+  },
+  render: (args) => {
+    return {
+      props: {
+        ...args,
+      },
+      template: `<rte-breadcrumbs [items]="items" [ariaLabel]="ariaLabel" data-testid="breadcrumbs"/>`,
+    };
+  },
+  play: async ({ canvasElement }) => {
+    focusElementBeforeComponent(canvasElement);
+
+    await userEvent.tab();
+    await userEvent.tab();
+    await userEvent.keyboard(TESTING_ENTER_KEY);
+    const overlay = document.getElementById("overlay-root");
+    const dropdownMenu = overlay?.querySelector("rte-dropdown-menu");
+    const menuItems = dropdownMenu?.querySelector("ul")?.querySelectorAll("li");
+    expect(dropdownMenu).toBeInTheDocument();
+
+    await userEvent.tab();
+    await waitFor(() => expect(menuItems?.[0]).toHaveFocus());
+    await userEvent.keyboard(TESTING_DOWN_KEY);
+    await waitFor(() => expect(menuItems?.[1]).toHaveFocus());
+    await userEvent.keyboard(TESTING_UP_KEY);
+    await waitFor(() => expect(menuItems?.[0]).toHaveFocus());
+  },
 };

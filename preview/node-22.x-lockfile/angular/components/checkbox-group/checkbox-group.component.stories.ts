@@ -4,14 +4,10 @@ import { userEvent, within, expect } from "@storybook/test";
 import { CheckboxGroupComponent } from "./checkbox-group.component";
 
 const meta: Meta<CheckboxGroupComponent> = {
-  title: "CheckboxGroup",
+  title: "Composants/CheckboxGroup",
   component: CheckboxGroupComponent,
   tags: ["autodocs"],
   argTypes: {
-    groupName: {
-      control: "text",
-      defaultValue: "group1",
-    },
     items: {
       control: "object",
       defaultValue: ["Option 1", "Option 2", "Option 3"],
@@ -64,7 +60,6 @@ type Story = StoryObj<CheckboxGroupComponent>;
 
 export const Default: Story = {
   args: {
-    groupName: "group1",
     items: ["Option 1", "Option 2", "Option 3"],
     direction: "horizontal",
     showItemsLabel: true,
