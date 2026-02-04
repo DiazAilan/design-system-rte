@@ -2,10 +2,7 @@ import {
   getSegmentPosition,
   isValidSegmentedControlOptions,
 } from "@design-system-rte/core/components/segmented-control/segmented-control-utils";
-import {
-  SegmentProps as CoreSegmentProps,
-  SegmentedControlProps as CoreSegmentedControlProps,
-} from "@design-system-rte/core/components/segmented-control/segmented-control.interface";
+import { SegmentedControlProps as CoreSegmentedControlProps } from "@design-system-rte/core/components/segmented-control/segmented-control.interface";
 import { forwardRef, MutableRefObject, useRef } from "react";
 
 import useSelectedIndicatorPosition from "../../hooks/useSelectedIndicatorPosition";
@@ -13,14 +10,8 @@ import useSelectedIndicatorPosition from "../../hooks/useSelectedIndicatorPositi
 import Segment from "./Segment";
 import style from "./SegmentedControl.module.scss";
 
-export interface SegmentProps extends CoreSegmentProps, Omit<React.HTMLAttributes<HTMLDivElement>, "id"> {
-  onClick?: (event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => void;
-  parentRef?: MutableRefObject<HTMLDivElement | null>;
-}
-
 interface SegmentedControlProps
-  extends CoreSegmentedControlProps,
-    Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
+  extends CoreSegmentedControlProps, Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   onChange: (id: string) => void;
 }
 

@@ -1,3 +1,5 @@
+import { BadgeHolderProps } from "../badge/badge.interface";
+
 export interface DropdownProps {
   dropdownId: string;
   hasParent?: boolean;
@@ -9,9 +11,11 @@ export interface DropdownProps {
   onClose?: () => void;
   isOpen?: boolean;
   offset?: number;
+  autofocus?: boolean;
+  autoOpen?: boolean;
 }
 
-export interface DropdownItemProps {
+export interface DropdownItemProps extends BadgeHolderProps {
   label?: string;
   leftIcon?: string;
   trailingText?: string;
@@ -20,4 +24,5 @@ export interface DropdownItemProps {
   hasIndent?: boolean;
   link?: string;
   onClick?: () => void;
+  isSelected?: boolean;
 }

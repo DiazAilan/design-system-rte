@@ -2,6 +2,209 @@
 
 # Angular
 
+## 1.2.0
+
+### Dropdown
+
+#### Minor Changes
+
+- correct input synchronization from template component to directive
+- add complex menu to angular
+
+### Toast
+
+#### Minor Changes
+
+- enable autodismiss functionality
+
+### Tab
+
+#### Minor Changes
+
+- export component to public api
+
+### Other
+
+#### Patch Changes
+
+- Updated dependencies [1f8e40c]
+- @design-system-rte/core@1.2.1
+
+## 1.1.0
+
+### Select
+
+#### Minor Changes
+
+- add new documentation
+- improve style
+- set positionning
+- harmonise readonly and disable behavior + add stories scenario
+- label style
+- Add angular component
+
+### Text Input
+
+#### Minor Changes
+
+- move AssistiveText & RequiredIndicator to base component of Text Input
+- correct disabled display
+- correct placeholder exposition and handling
+- add missing output signals after base-text-input refactor
+
+### Assistive-text
+
+#### Minor Changes
+
+- add width props
+- add angular component
+
+### Dropdown
+
+#### Minor Changes
+
+- allow correct escape dismissing
+- handle icon props in badge
+- add Badge
+- handle icon props in badge
+- add Badge
+- handle icon props in badge
+- add Badge
+- handle icon props in badge
+- add Badge
+
+### Breadcrumbs
+
+#### Minor Changes
+
+- Add Badge
+- Add Badge
+
+### Badge
+
+#### Minor Changes
+
+- add utils function to check if it should display badge
+- add utils function to check if it should display badge
+- add utils function to check if it should display badge
+- add utils function to check if it should display badge
+
+#### Patch Changes
+
+- set valid position value for xs badge
+
+### Split-button
+
+#### Minor Changes
+
+- Add badge
+- Add badge
+
+### Core
+
+#### Minor Changes
+
+- use parameter object for shouldDisplayBadge utils
+
+### Segmented Control
+
+#### Minor Changes
+
+- add badge
+- add badge
+
+### Searchbar
+
+#### Minor Changes
+
+- add new documentation
+- add new placeholder text for disabled input
+- change component structure so input inner border reacts correctly to focus & assistive text takes all the width of its container
+- add searchbar base functionality
+
+### Icon Button
+
+#### Minor Changes
+
+- show icon in disabled state button
+
+### Design Docs
+
+#### Minor Changes
+
+- correct sub-storybook context detection
+- add guideline page
+
+### Other
+
+#### Minor Changes
+
+- extract required indicator in a component
+
+#### Patch Changes
+
+- Updated dependencies [8c512ea]
+- Updated dependencies [921ffd7]
+- Updated dependencies [f5946ce]
+- Updated dependencies [0dbb025]
+- Updated dependencies [c6867f7]
+- Updated dependencies [251ae74]
+- Updated dependencies [38d9ec6]
+- Updated dependencies [2cff3de]
+- Updated dependencies [29e0462]
+- @design-system-rte/core@1.2.0
+
+## 1.0.1
+
+### Docs
+
+#### Patch Changes
+
+- update test to take theme-selector component into account
+- order toast stories
+
+### Popover
+
+#### Patch Changes
+
+- update shadows
+
+### Modal
+
+#### Patch Changes
+
+- update shadows
+- increase border radius for size L and XL
+
+### Dropdown
+
+#### Patch Changes
+
+- update shadows
+
+### Card
+
+#### Patch Changes
+
+- update shadows
+
+### Banner
+
+#### Patch Changes
+
+- update shadows
+
+### Other
+
+#### Patch Changes
+
+- better export of module to access style and component
+- update precommit hook
+- improve prettier integration
+- Updated dependencies [aa4024c]
+- Updated dependencies [ddb8b02]
+- @design-system-rte/core@1.1.0
+
 ## 1.0.0
 
 ### Public Release
@@ -41,135 +244,6 @@
 - force icon for status tag type
 - set right color for label and icon on success / information / alert variant
 
-## 0.17.0
-
-### Card
-
-#### Minor Changes
-
-- add keyboard handling
-- mutualize testing common logic
-- add accesibility options
-- add active pseudo-state
-- add focus ring for keyboard selection
-- add card component
-
-### Divider
-
-#### Minor Changes
-
-- correct horizontal display
-
-### Side Navigation
-
-#### Minor Changes
-
-- add footer navigation items
-- implement simple side nav from base side nav
-
-### Tooltip
-
-#### Minor Changes
-
-- correct label display width to show all its content
-
-### Tag
-
-#### Patch Changes
-
-- update text color + apply new background-color tokens
-
-### Other
-
-#### Patch Changes
-
-- Updated dependencies [f22d3ee]
-- Updated dependencies [8bca3e1]
-- Updated dependencies [4a444d4]
-- @design-system-rte/core@0.21.0
-
-## 0.16.0
-
-### Modal
-
-#### Minor Changes
-
-- unset scroll behavior on unmount
-- add support for filled / outlined appearance for title icon
-- add angular component
-
-### Angular
-
-#### Minor Changes
-
-- add focus trap service
-
-### Icon-button
-
-#### Minor Changes
-
-- add badge to component
-
-### Other
-
-#### Patch Changes
-
-- Updated dependencies [a7d75ed]
-- Updated dependencies [cc64a7f]
-- @design-system-rte/core@0.20.0
-# React
-
-## 1.0.0
-
-### Public Release
-
-#### Major Changes
-
-- Public Release
-
-#### Minor Changes
-
-- add correct component link
-- rearange component navigation structure
-- rearange component navigation structure
-- add correct component link
-- rearange component navigation structure
-
-### Toast
-
-#### Minor Changes
-
-- set correct padding value
-- extract getToastPriority logic to core + use computed to display actionButton + add custom icon to input
-- restrict action button appearance using only label and callback props
-- add angular component
-- add spacing from viewport + handle warning case in priority + add leftIcon and action button display boolean
-- add useCallback to prevent infinite rendering
-- add component to react test app
-- add priority queue management
-- add basic react component
-
-### Button
-
-#### Minor Changes
-
-- set correct position to badge
-- add badge
-
-### Banner
-
-#### Minor Changes
-
-- remove show icon props + remove top and left radius corner
-- update design
-
-### Tag
-
-#### Patch Changes
-
-- force icon for status tag type
-- set right color for label and icon on success / information / alert variant
-
 ### Other
 
 #### Patch Changes
@@ -179,103 +253,381 @@
 - Updated dependencies [f3d1179]
 - Updated dependencies [b779f76]
 - @design-system-rte/core@0.22.0
+# React
 
-## 0.16.0
+## 1.3.0
 
-### Card
-
-#### Minor Changes
-
-- add keyboard handling
-- add card to public api of packages and test in apps
-- mutualize testing common logic
-- add accesibility options
-- add active pseudo-state
-- add focus ring for keyboard selection
-- add card component
-
-### Side Navigation
+### Dropdown
 
 #### Minor Changes
 
-- : add missing props to useContentHeight detection
-- add Divider support for navItems & navMenus
-- add Badge support
-- add footer items
-- add Tooltip to SideNav
-- correct accesibility standards for ul and li items
-- add Nested Menus to SideNav
-- implement simple side nav from base side nav
+- add complex menu to react
 
-### Divider
+### Toast
 
 #### Minor Changes
 
-- correct horizontal display
+- enable autodismiss functionality
 
-### Tooltip
+### Tab
 
 #### Minor Changes
 
-- add customizable gap
-
-### Tag
-
-#### Patch Changes
-
-- update text color + apply new background-color tokens
+- export component to public api
 
 ### Other
 
 #### Patch Changes
 
-- remove react and react dom from dependencies
-- Updated dependencies [f22d3ee]
-- Updated dependencies [8bca3e1]
-- Updated dependencies [4a444d4]
-- @design-system-rte/core@0.21.0
+- Updated dependencies [1f8e40c]
+- @design-system-rte/core@1.2.1
 
-## 0.15.0
+## 1.2.0
+
+### Select
+
+#### Minor Changes
+
+- add new documentation
+- improve style
+- set positionning
+- harmonise readonly and disable behavior + add stories scenario
+- fix error variant on react component
+- Add angular component
+- add react component
+
+### Text Input
+
+#### Minor Changes
+
+- move AssistiveText & RequiredIndicator to base component of Text Input
+- extract assistive text in a component
+- correct disabled display
+- hide input value when input is disabled
+- correct placeholder exposition and handling
+
+### Assistive-text
+
+#### Minor Changes
+
+- add width props
+- add angular component
+
+### Link
+
+#### Minor Changes
+
+- harmonise appearance
+
+### Dropdown
+
+#### Minor Changes
+
+- add selected state to simple dropdown item
+- handle icon props in badge
+- add Badge
+- handle icon props in badge
+- add Badge
+- handle icon props in badge
+- add Badge
+- handle icon props in badge
+- add Badge
+
+### Breadcrumbs
+
+#### Minor Changes
+
+- Add Badge
+- Add Badge
+
+### Badge
+
+#### Minor Changes
+
+- add utils function to check if it should display badge
+- add utils function to check if it should display badge
+- add utils function to check if it should display badge
+- add utils function to check if it should display badge
+
+#### Patch Changes
+
+- set valid position value for xs badge
+
+### Core
+
+#### Minor Changes
+
+- add badge holder interface to use
+- use parameter object for shouldDisplayBadge utils
+- add badge holder interface to use
+- add badge holder interface to use
+- add badge holder interface to use
+
+### Split-button
+
+#### Minor Changes
+
+- Add badge
+- Add badge
+
+### Segmented Control
+
+#### Minor Changes
+
+- add badge
+- add badge
+
+### Searchbar
+
+#### Minor Changes
+
+- add new documentation
+- add new placeholder text for disabled input
+- correct inner input not losing focus when clearing is value
+- change component structure so input inner border reacts correctly to focus & assistive text takes all the width of its container
+- add searchbar base functionality
+
+### Design Docs
+
+#### Minor Changes
+
+- correct sub-storybook context detection
+- add guideline page
+
+### Storybook
+
+#### Minor Changes
+
+- add breadcrumbs - overview page
+- add new tab of options, heading, availability and LastUpdate component
+
+### Other
+
+#### Minor Changes
+
+- extract common input props
+- extract required indicator in a component
+
+#### Patch Changes
+
+- Updated dependencies [8c512ea]
+- Updated dependencies [921ffd7]
+- Updated dependencies [f5946ce]
+- Updated dependencies [0dbb025]
+- Updated dependencies [c6867f7]
+- Updated dependencies [251ae74]
+- Updated dependencies [38d9ec6]
+- Updated dependencies [2cff3de]
+- Updated dependencies [29e0462]
+- @design-system-rte/core@1.2.0
+
+## 1.1.0
+
+### Docs
+
+#### Minor Changes
+
+- update test to take theme-selector component into account
+- harmonise stories layout
+- move theme and mode switcher to component page
+
+#### Patch Changes
+
+- order toast stories
+
+### Core
+
+#### Minor Changes
+
+- add Nunito font to serve to react and angular package
+
+### Popover
+
+#### Patch Changes
+
+- update shadows
 
 ### Modal
 
-#### Minor Changes
+#### Patch Changes
 
-- unset scroll behavior on unmount
-- add support for filled / outlined appearance for title icon
-- enhance general style on react component
-- add react modal component
+- update shadows
+- increase border radius for size L and XL
 
-### Textarea
+### Dropdown
 
-#### Minor Changes
+#### Patch Changes
 
-- ensure full width for container
+- update shadows
 
-### Overlay
+### Card
 
-#### Minor Changes
+#### Patch Changes
 
-- add freezeNavigation prop to control body overflow and overlay styling
+- prevent click action on disabled or not clickable state
+- update shadows
 
-### Icon-button
+### Banner
 
-#### Minor Changes
+#### Patch Changes
 
-- add badge to component
+- update shadows
 
 ### Other
 
 #### Minor Changes
 
-- rename useKeydownEscape hook
+- better export of module to access style and component
 
 #### Patch Changes
 
-- Updated dependencies [a7d75ed]
-- Updated dependencies [cc64a7f]
-- @design-system-rte/core@0.20.0
+- upgrade @storybook/addon-essentials and @storybook/addon-interactions packages
+- Updated dependencies [aa4024c]
+- Updated dependencies [ddb8b02]
+- @design-system-rte/core@1.1.0
 # Core
+
+## 1.2.1
+
+### Core
+
+#### Patch Changes
+
+- add valid alias path for badge utils import
+
+### Other
+
+
+## 1.2.0
+
+### Select
+
+#### Minor Changes
+
+- add new documentation
+- improve style
+- harmonise readonly and disable behavior + add stories scenario
+- Add angular component
+
+### Assistive-text
+
+#### Minor Changes
+
+- add width props
+- add angular component
+
+### Dropdown
+
+#### Minor Changes
+
+- add selected state to simple dropdown item
+- add Badge
+- add Badge
+- add Badge
+- add Badge
+
+### Design-tokens
+
+#### Minor Changes
+
+- update script to generate tokens with the new architecture
+
+### Core
+
+#### Minor Changes
+
+- extract scripts out of design-tokens folder
+- change global architecture for design tokens
+- add badge holder interface to use
+- use parameter object for shouldDisplayBadge utils
+- add badge holder interface to use
+- add badge holder interface to use
+- add badge holder interface to use
+
+### Breadcrumbs
+
+#### Minor Changes
+
+- Add Badge
+- Add Badge
+
+### Badge
+
+#### Minor Changes
+
+- add utils function to check if it should display badge
+- add utils function to check if it should display badge
+- add utils function to check if it should display badge
+- add utils function to check if it should display badge
+- use IconSize constant and add xs value
+
+### Split-button
+
+#### Minor Changes
+
+- Add badge
+- Add badge
+
+### Segmented Control
+
+#### Minor Changes
+
+- add badge
+- add badge
+
+### Searchbar
+
+#### Minor Changes
+
+- add new documentation
+- change component structure so input inner border reacts correctly to focus & assistive text takes all the width of its container
+- add searchbar base functionality
+
+### Text Input
+
+#### Minor Changes
+
+- correct placeholder exposition and handling
+
+### Design Docs
+
+#### Minor Changes
+
+- correct sub-storybook context detection
+
+### Angular Storybook
+
+#### Minor Changes
+
+- correct font resolutions from assets retrieved from core during webpack build
+
+### Storybook
+
+#### Minor Changes
+
+- add breadcrumbs - overview page
+
+### Other
+
+#### Minor Changes
+
+- extract common input props
+- extract required indicator in a component
+- add angular missing dependencies
+- add angular missing dependencies
+- add angular missing dependencies
+
+## 1.1.0
+
+### Core
+
+#### Minor Changes
+
+- add Nunito font to serve to react and angular package
+- add elevation mixins
+
+### Other
+
 
 ## 1.0.0
 
@@ -309,66 +661,96 @@
 - remove show icon props + remove top and left radius corner
 - update design
 
-## 0.21.0
+### Other
+
+# Design Docs
+
+## 1.2.0
+
+### Design Docs
+
+#### Minor Changes
+
+- correct sub-storybook context detection
+- add guideline page
+
+### Angular Storybook
+
+#### Minor Changes
+
+- correct font resolutions from assets retrieved from core during webpack build
+
+### Badge
+
+#### Minor Changes
+
+- add new Badge docs
+
+### Breadcrumbs
+
+#### Minor Changes
+
+- add new Breadcrumbs docs
+
+### Doc
+
+#### Patch Changes
+
+- update stylesheet path to use to access global style and font
+
+### Other
+
+#### Patch Changes
+
+- Updated dependencies [8c512ea]
+- Updated dependencies [f5946ce]
+- Updated dependencies [0dbb025]
+- Updated dependencies [c6867f7]
+- Updated dependencies [251ae74]
+- Updated dependencies [88a14d9]
+- Updated dependencies [2cff3de]
+- Updated dependencies [29e0462]
+- @design-system-rte/react@1.2.0
+
+## 1.1.0
 
 ### Docs
 
 #### Minor Changes
 
-- create subcomponent for pages
+- add presentation video to home page
+- move theme and mode switcher to component page
 
-### Card
+#### Patch Changes
 
-#### Minor Changes
+- correct general migration kit points table
 
-- mutualize testing common logic
-- add card component
-
-### Side Navigation
+### Design-docs
 
 #### Minor Changes
 
-- add Divider support for navItems & navMenus
-- add Badge support
-- add footer items
-- add NavItem selection for SideNav
-- correct accesibility standards for ul and li items
-- add Nested Menus to SideNav
-- implement simple side nav from base side nav
+- add react package as dependencies
 
-### Tooltip
+### Core
 
 #### Minor Changes
 
-- add customizable gap
+- add Nunito font to serve to react and angular package
 
 ### Other
 
-
-## 0.20.0
-
-### Modal
-
 #### Minor Changes
 
-- add support for filled / outlined appearance for title icon
-- add react modal component
+- better export of module to access style and component
 
-### Icon
+#### Patch Changes
 
-#### Minor Changes
-
-- add icon sizes constants
-
-### Icon-button
-
-#### Minor Changes
-
-- add badge to component
-
-### Other
-
-# Design Docs
+- Updated dependencies [f39a6fb]
+- Updated dependencies [aa4024c]
+- Updated dependencies [ddb8b02]
+- Updated dependencies [ddd932b]
+- Updated dependencies [0a36e15]
+- @design-system-rte/react@1.1.0
 
 ## 1.0.0
 
@@ -385,83 +767,37 @@
 - add correct component link
 - extract introduction in general bloc
 - add new templating to get started docs for devs
+- add missing link to Icons docs page
+- add new Home page for docs
 - update Governance scheme in docs
+- add missing libraries image for Design startup docs
 - add design startup docs
 - Add page valeurs
 - add Kit de migration - general page
 - add corrected Governance Scheme to docs
+- add missing links to Contribution docs
+- add missing Figma link to Icons page
 - add contribution/icons docs
 - add bugs docs
 - add evolutions docs
 - add governance docs
 - rearange component navigation structure
 - update accessibility page to match global layout
+- change title from Typographie to Typography
 - add icons docs
 - add navigation for GetStarted sections
 - rearange navigation sections for common part
 - Add Elevation page
 - add grids docs
 - add border docs
-- Add design tokens page
-- add missing link to Icons docs page
-- add new Home page for docs
-
-#### Patch Changes
-
-- prune typography doc files
 - correct typography content padding
 - correct typography redaction
-- add missing links to Contribution docs
-- add missing Figma link to Icons page
-- add missing libraries image for Design startup docs
-
-### Typography
-
-#### Minor Changes
-
-- change title from Typographie to Typography
-
-### Design Docs
-
-#### Minor Changes
-
+- remove scaffolding files from typography implementation
+- prune typography doc files
 - add typography docs
-
-#### Patch Changes
-
-- add typography docs
-
-### Doc
-
-#### Minor Changes
-
 - add heading level 4 style
 - Add Colors page
-
-## 0.9.0
-
-### Docs
-
-#### Minor Changes
-
-- update last update accordion icon
-- add spacing page
-- create subcomponent for pages
-- refacto architecture for Introduction page
-
-### Other
-
-#### Patch Changes
-
-- correct sidenav display when no stories are provided to a section
-
-## 0.8.0
-
-### Storybook
-
-#### Minor Changes
-
-- add Accessibilité page
+- Add design tokens page
 
 ### Other
 

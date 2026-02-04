@@ -1,4 +1,5 @@
 import { Alignment, Position } from "@design-system-rte/core/components/common/common-types";
+import { DROPDOWN_ANIMATION_DURATION } from "@design-system-rte/core/components/dropdown/dropdown.constants";
 import { DropdownProps as CoreDropdownProps } from "@design-system-rte/core/components/dropdown/dropdown.interface";
 import { DropdownManager } from "@design-system-rte/core/components/dropdown/DropdownManager";
 import {
@@ -11,13 +12,13 @@ import {
   ARROW_UP_KEY,
   ENTER_KEY,
   ESCAPE_KEY,
-  SPACE_KEY,
   TAB_KEY,
 } from "@design-system-rte/core/constants/keyboard/keyboard.constants";
 import { useEffect, useState, useRef, useCallback, forwardRef, useContext } from "react";
 
 import { useActiveKeyboard } from "../../hooks/useActiveKeyboard";
 import useAnimatedMount from "../../hooks/useAnimatedMount";
+import Divider from "../divider/Divider";
 import { Overlay } from "../overlay/Overlay";
 import { concatClassNames } from "../utils";
 
@@ -29,6 +30,8 @@ import { useDropdownState } from "./hooks/useDropdownState";
 
 interface DropdownProps extends CoreDropdownProps, React.HTMLAttributes<HTMLDivElement> {
   trigger: React.ReactNode;
+  header?: React.ReactNode;
+  footer?: React.ReactNode;
 }
 
 export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
@@ -46,6 +49,9 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       children,
       offset = 0,
       alignment = "start",
+      autofocus = true,
+      header,
+      footer,
       ...props
     },
     ref,
@@ -60,7 +66,7 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     const [triggerElement, setTriggerElement] = useState<HTMLDivElement | null>(null);
     const [coordinates, setCoordinates] = useState<{ top: number; left: number }>({ top: 500, left: 500 });
 
-    const { shouldRender, isAnimating } = useAnimatedMount(isOpen, 150);
+    const { shouldRender, isAnimating } = useAnimatedMount(isOpen, DROPDOWN_ANIMATION_DURATION);
 
     const dropdownCallbackRef = useCallback(
       (node: HTMLDivElement | null) => {
@@ -118,17 +124,10 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
       }
     };
 
-    const handleOnKeyUpTrigger = (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if (e.key === TAB_KEY) {
-        if (dropdownElement === null) return;
-        e.preventDefault();
-        focusNextElement(dropdownElement);
-      }
-    };
     const { onKeyDown, onKeyUp } = useActiveKeyboard<HTMLDivElement>(
       { onKeyUp: handleKeyUp, onKeyDown: handleKeyDown },
       {
-        interactiveKeyCodes: [SPACE_KEY, ENTER_KEY, TAB_KEY, ARROW_DOWN_KEY, ARROW_UP_KEY, ESCAPE_KEY],
+        interactiveKeyCodes: [ENTER_KEY, TAB_KEY, ARROW_DOWN_KEY, ARROW_UP_KEY, ESCAPE_KEY],
       },
     );
 
@@ -196,20 +195,14 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
     }, [hasParent, dropdownElement, triggerElement, position, alignment, positionChildDropdown, positionDropdown]);
 
     useEffect(() => {
-      if (isOpen && dropdownElement) {
+      if (isOpen && dropdownElement && autofocus) {
         focusDropdownFirstElement(autoId);
       }
-    }, [isOpen, autoId, dropdownElement]);
+    }, [isOpen, autoId, dropdownElement, autofocus]);
 
     return (
       <DropdownContextProvider dropdownId={autoId} closeRoot={closeDropdown} autoClose={autoClose}>
-        <div
-          ref={triggerCallbackRef}
-          className={styles.trigger}
-          tabIndex={-1}
-          onKeyDown={handleOnKeyDownTrigger}
-          onKeyUp={handleOnKeyUpTrigger}
-        >
+        <div ref={triggerCallbackRef} className={styles.trigger} tabIndex={-1} onKeyDown={handleOnKeyDownTrigger}>
           {trigger}
         </div>
 
@@ -230,9 +223,23 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
               onKeyUp={onKeyUp}
               onKeyDown={onKeyDown}
             >
-              <ul className={styles["dropdown-items"]} role="menu">
-                {children}
-              </ul>
+              {header && (
+                <div className={concatClassNames(styles["dropdown-menu-header"], "rte-dropdown-menu-header")}>
+                  {header}
+                  <Divider />
+                </div>
+              )}
+              <div className={concatClassNames(styles["dropdown-menu-content"], "rte-dropdown-menu-content")}>
+                <ul className={styles["dropdown-items"]} role="menu">
+                  {children}
+                </ul>
+              </div>
+              {footer && (
+                <div className={concatClassNames(styles["dropdown-menu-footer"], "rte-dropdown-menu-footer")}>
+                  <Divider />
+                  {footer}
+                </div>
+              )}
             </div>
           </Overlay>
         )}

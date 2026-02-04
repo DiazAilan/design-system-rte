@@ -3,6 +3,8 @@ import { importProvidersFrom } from "@angular/core";
 import { setCompodocJson } from "@storybook/addon-docs/angular";
 import { applicationConfig, type Preview, componentWrapperDecorator, moduleMetadata } from "@storybook/angular";
 
+import "@design-system-rte/core/css/rte-fonts.css";
+
 import docJson from "../documentation.json";
 
 import { ThemeSelectorComponent } from "./template/theme-selector/theme-selector.component";
@@ -31,19 +33,22 @@ const preview: Preview = {
         locales: "fr-FR",
       },
     },
+    composed: {
+      remoteId: "angular",
+    },
   },
   decorators: [
     ...decorators,
-    componentWrapperDecorator(
-      (story) => `
-        <div style="padding: 16px 16px 80px 50px; background-color: var(--background-default); width: auto; height: 100%; display: flex; flex-direction: column; gap: 96px;">
-          <rte-theme-selector/>
-          <div style="margin: auto;">
-            ${story}
+    componentWrapperDecorator((story) => {
+      return `
+          <div style="padding: 16px 16px 80px 50px; background-color: var(--background-default); width: auto; height: 100%; display: flex; flex-direction: column; gap: 96px;">
+            <rte-theme-selector/>
+            <div style="margin: auto;">
+              ${story}
+            </div>
           </div>
-        </div>
-      `,
-    ),
+        `;
+    }),
   ],
 };
 

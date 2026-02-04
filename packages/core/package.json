@@ -1,14 +1,15 @@
 {
   "name": "@design-system-rte/core",
-  "version": "1.0.0",
+  "version": "1.2.1",
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
-    "build": "npm run build:css-themes",
+    "build": "npm run build:css-themes && npm run build:css-fonts",
     "build:css-themes": "ts-node css-theme-generator.ts",
-    "generate:tokens": "ts-node ./design-tokens/generator.ts",
+    "build:css-fonts": "ts-node css-font-generator.ts",
+    "generate:tokens": "ts-node ./scripts/design-tokens/generator.ts",
     "prepublishOnly": "npm run build"
   },
   "keywords": [],
