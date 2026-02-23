@@ -1,5 +1,28 @@
 # @design-system-rte/core
 
+## 1.3.0
+
+### Minor Changes
+
+- ced68e5: ## Changes
+  - (Stepper) use utils function to determine clickable state of a step
+  - (Stepper) remove log
+  - (Stepper) export component to public api
+  - (Stepper) add Angular component
+  - (Stepper) Add React component
+
+### Patch Changes
+
+- 1c2c834: ## Changes
+  - (Core) set valid path for icon constants import
+
+- c08ea59: ## Changes
+  - (Core) expose a public API for component interfaces and utils
+  - (Core) repair missing and duplicated interfaces and constants
+
+- a77bb52: ## Changes
+  - (Loader) export loader component
+
 ## 1.2.1
 
 ### Patch Changes
