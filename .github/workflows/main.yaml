@@ -156,6 +156,20 @@ jobs:
           restore-keys: |
             icons
 
+      - name: Restore cache build core
+        id: cache-build-core
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./packages/core/css
+            ./packages/core/dist
+          key: build-core-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+
+      - name: Build Core Package
+        if: steps.cache-build-core.outputs.cache-hit != 'true'
+        working-directory: packages/core
+        run: npm run build
+
       - name: Cache react build output
         uses: actions/cache@v4
         with:
