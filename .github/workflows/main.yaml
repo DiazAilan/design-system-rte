@@ -99,13 +99,6 @@ jobs:
         with:
           path: |
             ./packages/core/css
-          key: build-core-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
-
-      - name: Restore cache build core
-        uses: actions/cache@v4
-        with:
-          path: |
-            ./packages/core/css
             ./packages/core/dist
           key: build-core-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
 
@@ -239,7 +232,7 @@ jobs:
         run: npm run build
 
       - name: Lint
-        working-directory: packages/react
+        working-directory: packages/angular
         run: npm run lint:fix
 
       - name: Run tests
