@@ -205,6 +205,7 @@ jobs:
         with:
           path: |
             ./packages/core/css
+            ./packages/core/dist
           key: build-core-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
 
       - name: Restore cache build core
