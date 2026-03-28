@@ -1,5 +1,48 @@
 # @design-system-rte/angular
 
+## 2.0.0
+
+### Minor Changes
+
+- ced68e5: ## Changes
+  - (Stepper) make steps clickable inkeyboard interaction stories
+  - (Stepper) set active step label with primary color on angular
+  - (Stepper) use keydown event only
+  - (Stepper) use utils function to determine clickable state of a step
+  - (Stepper) remove log
+  - (Stepper) export component to public api
+  - (Stepper) add Angular component
+
+- 99d9c35: ## Changes
+  - (Dropdown) focus back trigger on closing it with escape input
+
+### Patch Changes
+
+- fc94905: ## Changes
+  - (Radio-button) remove unnecessary cursor style
+  - (Radio-button) rewrite radio button structure to prevent visual deformation on checked state
+
+- 6c10140: ## Changes
+  - (Modal) set explicit margin auto to prevent overriding and keep it centered
+
+- 0fa055f: ## Changes
+  - (Angular) correct dependency nesting between angular and core from @design-system-rte
+
+- 7247510: ## Changes
+  - (Sidenav) allow all clicking area for nav item
+
+- c08ea59: ## Changes
+  - (Core) expose a public API for component interfaces and utils
+
+- a77bb52: ## Changes
+  - (Loader) export loader component
+
+- Updated dependencies [ced68e5]
+- Updated dependencies [1c2c834]
+- Updated dependencies [c08ea59]
+- Updated dependencies [a77bb52]
+  - @design-system-rte/core@1.3.0
+
 ## 1.2.0
 
 ### Minor Changes
