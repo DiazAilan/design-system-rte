@@ -10,7 +10,6 @@ import {
   ElementRef,
   inject,
   input,
-  OnDestroy,
   output,
   Renderer2,
   signal,
@@ -32,6 +31,7 @@ import { OverlayService } from "../../services/overlay.service";
 
 import { DropdownMenuComponent } from "./dropdown-menu/dropdown-menu.component";
 import { DropdownTriggerDirective } from "./dropdown-trigger/dropdown-trigger.directive";
+import { DropdownItemConfig } from "./dropdown.types";
 import { focusDropdownFirstElement } from "./dropdown.utils";
 
 @Directive({
@@ -42,7 +42,7 @@ import { focusDropdownFirstElement } from "./dropdown.utils";
   },
   standalone: true,
 })
-export class DropdownDirective implements AfterContentInit, OnDestroy {
+export class DropdownDirective implements AfterContentInit {
   private static idCounter = 0;
 
   readonly trigger = contentChild(DropdownTriggerDirective);
@@ -56,8 +56,9 @@ export class DropdownDirective implements AfterContentInit, OnDestroy {
   readonly rteDropdownAutofocus = input<boolean>(true);
   readonly rteDropdownAutoOpen = input<boolean>(true);
   readonly rteDropdownWidth = input<number | null>(null);
+  readonly rteCloseOnItemClick = input<boolean>(true);
 
-  readonly menuEvent = output<{ event: Event; id: string }>();
+  readonly menuEvent = output<{ event: Event; id: string; item?: DropdownItemConfig }>();
   readonly dropdownId = `dropdown_${++DropdownDirective.idCounter}`;
 
   readonly overlayService = inject(OverlayService);
@@ -72,6 +73,8 @@ export class DropdownDirective implements AfterContentInit, OnDestroy {
   readonly clickedOutside = output<void>();
   readonly closedDropdown = output<void>();
 
+  readonly menuChangeEvent = output<{ event: Event; id: string }>();
+
   readonly isActive = signal(false);
 
   readonly menuInputs = computed(() => {
@@ -81,14 +84,36 @@ export class DropdownDirective implements AfterContentInit, OnDestroy {
     }
     return {
       items: menu.items(),
+      bodyTemplate: menu.bodyDirective()?.templateRef,
       headerTemplate: menu.headerDirective()?.templateRef,
       footerTemplate: menu.footerDirective()?.templateRef,
       width: menu.width(),
     };
   });
 
+  dropdownMenuRef: ComponentRef<DropdownMenuComponent> | null = null;
+  private itemEventSubscription: { unsubscribe: () => void } | null = null;
+  private viewportResizeFrameId: number | null = null;
+
+  private readonly onViewportOrWindowResize = (): void => {
+    if (this.viewportResizeFrameId !== null) {
+      cancelAnimationFrame(this.viewportResizeFrameId);
+    }
+    this.viewportResizeFrameId = requestAnimationFrame(() => {
+      this.viewportResizeFrameId = null;
+      this.scheduleOverlayLayoutSync();
+    });
+  };
+
   constructor() {
     this.hostElement = this.elementRef.nativeElement;
+
+    this.destroyRef.onDestroy(() => {
+      this.unsubscribeItemEvent();
+      this.removeClickOutsideListener();
+      this.dropdownMenuRef?.destroy();
+      this.dropdownMenuRef = null;
+    });
 
     effect(() => {
       const isOpen = this.rteDropdownIsOpen();
@@ -106,29 +131,79 @@ export class DropdownDirective implements AfterContentInit, OnDestroy {
 
     effect(() => {
       const inputs = this.menuInputs();
+      const isOpen = this.rteDropdownIsOpen();
       if (this.dropdownMenuRef && inputs) {
         this.assignInputs();
+        if (isOpen) {
+          waitForNextFrame(() => {
+            if (!this.dropdownMenuRef || !this.rteDropdownIsOpen()) {
+              return;
+            }
+            this.positionDropdownMenu(this.rteDropdownPosition());
+          });
+        }
+      }
+    });
+
+    this.registerViewportResizeRepositionHandling();
+  }
+
+  private registerViewportResizeRepositionHandling(): void {
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.addEventListener("resize", this.onViewportOrWindowResize);
+    window.visualViewport?.addEventListener("resize", this.onViewportOrWindowResize);
+    this.destroyRef.onDestroy(() => {
+      window.removeEventListener("resize", this.onViewportOrWindowResize);
+      window.visualViewport?.removeEventListener("resize", this.onViewportOrWindowResize);
+      if (this.viewportResizeFrameId !== null) {
+        cancelAnimationFrame(this.viewportResizeFrameId);
+        this.viewportResizeFrameId = null;
       }
     });
   }
 
-  dropdownMenuRef: ComponentRef<DropdownMenuComponent> | null = null;
+  private scheduleOverlayLayoutSync(): void {
+    if (!this.dropdownMenuRef || !this.rteDropdownIsOpen()) {
+      return;
+    }
+    this.assignInputs();
+    waitForNextFrame(() => {
+      if (!this.dropdownMenuRef || !this.rteDropdownIsOpen()) {
+        return;
+      }
+      this.positionDropdownMenu(this.rteDropdownPosition());
+    });
+  }
 
   onTrigger(): void {
     if (this.rteDropdownAutoOpen()) {
       this.showDropdownMenu();
-    }
-    if (this.rteDropdownAutofocus()) {
-      waitForNextFrame(() => focusDropdownFirstElement(this.dropdownId));
+      if (this.rteDropdownAutofocus()) {
+        waitForNextFrame(() => {
+          if (!this.dropdownMenuRef) {
+            return;
+          }
+          focusDropdownFirstElement(this.dropdownId);
+        });
+      }
     }
   }
 
   onTriggerKeyEvent(event: KeyboardEvent): void {
-    if (
+    if (!this.rteDropdownAutoOpen()) {
+      return;
+    }
+
+    const shouldOpen =
       event.key === SPACE_KEY ||
       event.key === ENTER_KEY ||
-      (event.key === ARROW_DOWN_KEY && this.trigger()?.rteDropdownTriggerActivateWithArrowDown())
-    ) {
+      (event.key === ARROW_DOWN_KEY && this.trigger()?.rteDropdownTriggerActivateWithArrowDown());
+
+    if (shouldOpen) {
+      event.preventDefault();
+      event.stopPropagation();
       this.showDropdownMenu();
       if (this.rteDropdownAutofocus()) {
         waitForNextFrame(() => focusDropdownFirstElement(this.dropdownId));
@@ -136,37 +211,37 @@ export class DropdownDirective implements AfterContentInit, OnDestroy {
     }
   }
 
-  onMenuEvent(event: { event: Event; id: string }): void {
+  onMenuEvent(event: { event: Event; id: string; item?: DropdownItemConfig }): void {
     this.menuEvent.emit(event);
-    this.isActive.set(false);
-    this.dropdownService.closeAllMenus();
-  }
-
-  ngAfterContentInit(): void {
-    if (this.trigger()) {
-      this.trigger()?.dropdownTriggered.subscribe(() => {
-        this.onTrigger();
-      });
-
-      this.trigger()?.dropdownKeyDown.subscribe((event: KeyboardEvent) => {
-        this.onTriggerKeyEvent(event);
-      });
-
-      this.trigger()?.dropdownTriggerClearContent.subscribe(() => {
-        this.closeDropdown();
-      });
-      this.trigger()?.dropdownTriggerOpenDropdown.subscribe(() => {
-        this.showDropdownMenu();
-      });
-      this.trigger()?.dropdownTriggerCloseDropdown.subscribe(() => {
-        this.closeDropdown();
-      });
+    if (!event.item?.children?.length && this.rteCloseOnItemClick()) {
+      this.isActive.set(false);
+      this.dropdownService.closeAllMenus();
     }
   }
 
+  onMenuChangeEvent(event: { event: Event; id: string }): void {
+    this.menuEvent.emit(event);
+  }
+
+  ngAfterContentInit(): void {
+    const trigger = this.trigger();
+    if (!trigger) return;
+
+    const triggerSubscriptions = [
+      trigger.dropdownTriggered.subscribe(() => this.onTrigger()),
+      trigger.dropdownKeyDown.subscribe((event: KeyboardEvent) => this.onTriggerKeyEvent(event)),
+      trigger.dropdownTriggerClearContent.subscribe(() => this.closeDropdown()),
+      trigger.dropdownTriggerOpenDropdown.subscribe(() => this.showDropdownMenu()),
+      trigger.dropdownTriggerCloseDropdown.subscribe(() => this.closeDropdown()),
+    ];
+    this.destroyRef.onDestroy(() => triggerSubscriptions.forEach((subscription) => subscription.unsubscribe()));
+  }
+
   showDropdownMenu(): void {
+    this.unsubscribeItemEvent();
     if (this.dropdownMenuRef) {
       this.dropdownMenuRef.destroy();
+      this.dropdownMenuRef = null;
     }
 
     this.dropdownMenuRef = this.overlayService.create(DropdownMenuComponent, this.viewContainerRef);
@@ -181,26 +256,20 @@ export class DropdownDirective implements AfterContentInit, OnDestroy {
     this.positionDropdownMenu(this.rteDropdownPosition());
     this.addClickOutsideListener();
 
-    this.dropdownMenuRef.instance.itemEvent.subscribe((event: { event: Event; id: string }) => {
-      this.onMenuEvent(event);
-    });
+    this.itemEventSubscription = this.dropdownMenuRef.instance.itemEvent.subscribe(
+      (event: { event: Event; id: string; item?: DropdownItemConfig }) => this.onMenuEvent(event),
+    );
 
     const dropdownStateSubscription = this.dropdownService.state$.subscribe((state) => {
       if (state === null) {
         if (this.dropdownMenuRef) {
+          this.unsubscribeItemEvent();
           this.dropdownMenuRef.destroy();
           this.dropdownMenuRef = null;
 
           this.removeClickOutsideListener();
           dropdownStateSubscription.unsubscribe();
-          const buttonTrigger = this.trigger()?.elementRef.nativeElement.querySelectorAll(
-            FOCUSABLE_BUTTONS_QUERY,
-          )[0] as HTMLElement;
-          if (buttonTrigger) {
-            buttonTrigger.focus();
-          } else {
-            this.trigger()?.elementRef.nativeElement.focus();
-          }
+          this.focusTriggerElementAfterMenuClosed();
         }
       }
     });
@@ -212,8 +281,10 @@ export class DropdownDirective implements AfterContentInit, OnDestroy {
     if (this.dropdownMenuRef) {
       const items = this.menu()?.items() ?? [];
       this.dropdownMenuRef.setInput("items", items);
+      this.dropdownMenuRef.setInput("bodyTemplate", this.menu()?.bodyDirective()?.templateRef);
       this.dropdownMenuRef.setInput("headerTemplate", this.menu()?.headerDirective()?.templateRef);
       this.dropdownMenuRef.setInput("footerTemplate", this.menu()?.footerDirective()?.templateRef);
+      this.dropdownMenuRef.setInput("bodyTemplate", this.menu()?.bodyDirective()?.templateRef);
     }
 
     this.assignWidth();
@@ -242,7 +313,13 @@ export class DropdownDirective implements AfterContentInit, OnDestroy {
         this.renderer.setStyle(dropdownMenuElement, "display", "block");
         this.cdr.detectChanges();
         const computedPosition: Exclude<Position, "auto"> =
-          position === "auto" ? getAutoPlacementDropdown(triggerElement, dropdownMenuElement, "bottom") : position;
+          position === "auto"
+            ? getAutoPlacementDropdown({
+                hostElement: triggerElement,
+                castedElement: dropdownMenuElement,
+                defaultPosition: "bottom",
+              })
+            : position;
         const autoAlignment =
           this.rteDropdownAlignment() ?? getAutoAlignment(triggerElement, dropdownMenuElement, computedPosition);
         const computedCoordinates = getCoordinates(
@@ -261,28 +338,41 @@ export class DropdownDirective implements AfterContentInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.removeClickOutsideListener();
-    if (this.dropdownMenuRef) {
-      this.dropdownMenuRef.destroy();
+  private focusTriggerElementAfterMenuClosed(): void {
+    const triggerElement = this.trigger()?.elementRef.nativeElement as HTMLElement | undefined;
+    if (!triggerElement) {
+      return;
     }
+    const focusable = Array.from(triggerElement.querySelectorAll<HTMLElement>(FOCUSABLE_BUTTONS_QUERY));
+    if (focusable.length === 0) {
+      triggerElement.focus();
+      return;
+    }
+    const explicitButtons = focusable.filter((element) => {
+      return element.tagName === "BUTTON" || element.getAttribute("role") === "button";
+    });
+    const target =
+      explicitButtons.length > 0 ? explicitButtons[explicitButtons.length - 1] : focusable[focusable.length - 1];
+    target.focus();
+  }
+
+  private unsubscribeItemEvent(): void {
+    this.itemEventSubscription?.unsubscribe();
+    this.itemEventSubscription = null;
   }
 
   private readonly handleClickOutside = (event: MouseEvent): void => {
     const target = event.target as Element;
 
-    const isMenuItemClick = target.closest(".rte-dropdown-item") !== null;
-    if (isMenuItemClick) {
+    const clickedInTrigger = this.hostElement.contains(target);
+    const dropdownMenuElement = this.dropdownMenuRef?.location.nativeElement as HTMLElement | undefined;
+    const clickedInThisMenu = dropdownMenuElement ? dropdownMenuElement.contains(target) : false;
+    if (clickedInTrigger || clickedInThisMenu) {
       return;
     }
 
-    const clickedInTrigger = this.hostElement.contains(target);
-    const clickedInMenu = this.dropdownMenuRef?.location.nativeElement.contains(target);
-
-    if (!clickedInTrigger && !clickedInMenu) {
-      this.closeDropdown();
-      this.clickedOutside.emit();
-    }
+    this.closeDropdown();
+    this.clickedOutside.emit();
   };
 
   private addClickOutsideListener(): void {
